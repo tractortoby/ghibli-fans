@@ -1,25 +1,35 @@
-import logo from './logo.svg';
-import './App.css';
+import logo from "./logo.png";
+// import "./App.css";
+import React, { Component } from "react";
 
-function App() {
-  return (
-    <div className="App">
-      <header className="App-header">
+class App extends Component {
+  state = {
+    data: [],
+  };
+
+  componentDidMount() {
+    fetch("https://ghibliapi.herokuapp.com/films")
+      .then((response) => response.json())
+      .then((data) => this.setState({ data }));
+  }
+
+  render() {
+    const { data } = this.state;
+
+    return (
+      <div className="App">
         <img src={logo} className="App-logo" alt="logo" />
-        <p>
-          Edit <code>src/App.js</code> and save to reload.
-        </p>
-        <a
-          className="App-link"
-          href="https://reactjs.org"
-          target="_blank"
-          rel="noopener noreferrer"
-        >
-          Learn React
-        </a>
-      </header>
-    </div>
-  );
+        {data.map((movie) => {
+          return (
+            <div className="container">
+              <h1 className="card">{movie.title}</h1>
+              <p>{movie.description}</p>
+            </div>
+          );
+        })}
+      </div>
+    );
+  }
 }
 
 export default App;
